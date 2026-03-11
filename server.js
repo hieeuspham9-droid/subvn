@@ -29,6 +29,7 @@ const { initCronjobs } = require('./services/cronjobs');
 
 // Initialize Express
 const app = express();
+app.use(express.static(__dirname));
 app.use(cors());
 app.use('/api/jap', japRoutes);
 app.use('/api/auth', authRoutes);
