@@ -1101,7 +1101,8 @@ fetch('http://localhost:3000/api/services/jap')
         // Logout
         function logout() {
             if (confirm('Bạn có chắc muốn đăng xuất?')) {
-                window.location.href = 'sub-website.html';
+             localStorage.removeItem("loggedIn");
+window.location.href = "sub-website.html";
             }
         }
 
@@ -1124,7 +1125,7 @@ fetch('http://localhost:3000/api/services/jap')
 <script>
   // Check login
   if (localStorage.getItem("loggedIn") !== "true") {
-    window.location.href = "../index.html";
+   window.location.href = "/";
   }
 
   const name = localStorage.getItem("userName") || "User";
