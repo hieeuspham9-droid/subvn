@@ -31,6 +31,13 @@ const { initCronjobs } = require('./services/cronjobs');
 const app = express();
 app.use(express.static(__dirname));
 app.use(cors());
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/sub-website.html');
+});
+
+app.get('/index.html', (req, res) => {
+    res.sendFile(__dirname + '/sub-website.html');
+});
 app.use('/api/jap', japRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
