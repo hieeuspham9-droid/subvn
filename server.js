@@ -87,6 +87,10 @@ const authLimiter = rateLimit({
 // =====================================================
 
 app.use('/api/jap', japRoutes);
+// Homepage
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/sub-website.html");
+});
 // Health check
 app.get('/health', (req, res) => {
     res.json({ 
@@ -181,7 +185,9 @@ app.use(errorHandler);
 // =====================================================
 // START SERVER
 // =====================================================
-
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/sub-website.html");
+});
 app.listen(PORT, () => {
     console.log(`
 ╔═══════════════════════════════════════════════════╗
