@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUB.VN - Hệ Thống Tăng Tương Tác Mạng Xã Hội Uy Tín Giá Rẻ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {   
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+            padding: 0.6rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 150px 2rem 100px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            animation: fadeInUp 0.8s 0.2s backwards;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            animation: fadeInUp 0.8s 0.4s backwards;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-light {
+            background: white;
+            color: #667eea;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* About Section */
+        .about {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-content h2 {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-content p {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 2rem;
+            text-align: center;
+        }
+
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Services Section */
+        .services {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 2rem;
+        }
+
+        .services h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 3rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(102,126,234,0.3);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: #f8f9fa;
+            padding: 80px 2rem;
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .contact p {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Footer */
+        footer {
+            background: #2d3748;
+            color: white;
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: #cbd5e0;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #4a5568;
+            color: #cbd5e0;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .contact-info {
+                flex-direction: column;
+            }
+        }
+
+        /* Login/Signup Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-content h2 {
+            color: #667eea;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">SUB.VN</div>
+            <ul>
+                <li><a href="#home">Trang Chủ</a></li>
+                <li><a href="#services">Dịch Vụ</a></li>
+                <li><a href="#about">Giới Thiệu</a></li>
+                <li><a href="#contact">Liên Hệ</a></li>
+            </ul>
+            <div>
+                <a href="#" class="btn-primary" onclick="openModal('login')">Đăng Nhập</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1>Tăng Tương Tác Mạng Xã Hội<br>Uy Tín Hàng Đầu Việt Nam</h1>
+        <p>Dịch vụ chuyên nghiệp, giá cả hợp lý, an toàn và bảo mật 100%</p>
+        <div class="hero-buttons">
+            <a href="#" class="btn btn-light" onclick="openModal('signup')">Đăng Ký Ngay</a>
+            <a href="#services" class="btn btn-outline">Xem Dịch Vụ</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-content">
+            <h2>Vì Sao Nên Chọn Dịch Vụ Của Chúng Tôi?</h2>
+            <p>SUB.VN tự hào là một trong những Website cung cấp dịch vụ về nền tảng mạng xã hội Online hàng đầu Việt Nam. Chúng tôi đã có hơn 5 năm kinh nghiệm trong các lĩnh vực này.</p>
+            <p>Với đội ngũ nhân viên chuyên nghiệp, chúng tôi cam kết sẽ đem lại cho Quý Khách những dịch vụ chất lượng vượt cả mong đợi, an toàn và uy tín.</p>
+            <p>✓ Giá cả cạnh tranh nhất thị trường<br>
+               ✓ Hỗ trợ 24/7<br>
+               ✓ Bảo mật thông tin tuyệt đối<br>
+               ✓ Thanh toán linh hoạt</p>
+        </div>
+        <div class="about-image">
+            <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=400&fit=crop" alt="Social Media">
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <h2>Thành Tích Của Chúng Tôi</h2>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">103,875+</div>
+                <div class="stat-label">Đơn Hàng Hoàn Thành</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">4,447+</div>
+                <div class="stat-label">Khách Hàng Tin Tưởng</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">156+</div>
+                <div class="stat-label">Đối Tác Chiến Lược</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <h2>Dịch Vụ Của Chúng Tôi</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">📘</div>
+                <h3>Facebook</h3>
+                <p>Tăng like, follow, comment, share, view video và nhiều hơn nữa</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🎵</div>
+                <h3>TikTok</h3>
+                <p>Tăng follow, like, view, comment cho TikTok của bạn</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">▶️</div>
+                <h3>YouTube</h3>
+                <p>Tăng subscriber, view, like, comment cho kênh YouTube</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📷</div>
+                <h3>Instagram</h3>
+                <p>Tăng follow, like, view story, comment Instagram</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">❌</div>
+                <h3>Twitter / X</h3>
+                <p>Tăng follow, like, retweet, comment cho tài khoản X</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">💼</div>
+                <h3>Telegram</h3>
+                <p>Tăng member, view, reaction cho Telegram channel</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-container">
+            <h2>Liên Hệ Với Chúng Tôi</h2>
+            <p>Cảm ơn quý khách đã ghé thăm Website của chúng tôi. Nếu có thắc mắc vui lòng liên hệ ngay để được giải đáp!</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h4>📞 Zalo</h4>
+                    <p>0972562495</p>
+                </div>
+                <div class="contact-item">
+                    <h4>📘 Facebook</h4>
+                    <p>OnlyLove</p>
+                </div>
+                <div class="contact-item">
+                    <h4>📧 Email</h4>
+                    <p>dwen.khachieu@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>SUB.VN</h3>
+                <p>Hệ thống tăng tương tác mạng xã hội uy tín hàng đầu Việt Nam</p>
+            </div>
+            <div class="footer-section">
+                <h3>Trang Khác</h3>
+                <ul>
+                    <li><a href="#home">Trang Chủ</a></li>
+                    <li><a href="#services">Dịch Vụ</a></li>
+                    <li><a href="#about">Giới Thiệu</a></li>
+                    <li><a href="#contact">Liên Hệ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Dịch Vụ</h3>
+                <ul>
+                    <li><a href="#services">Facebook</a></li>
+                    <li><a href="#services">TikTok</a></li>
+                    <li><a href="#services">YouTube</a></li>
+                    <li><a href="#services">Instagram</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Liên Hệ</h3>
+                <ul>
+                    <li><a href="tel:0972562495">Zalo: 0972562495</a></li>
+                    <li><a href="#">Facebook: OnlyLove</a></li>
+                    <li><a href="mailto:dwen.khachieu@gmail.com">Email: dwen.khachieu@gmail.com</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 <strong>SUB.VN</strong> - Tất cả quyền được bảo lưu</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('login')">&times;</span>
+            <h2>Đăng Nhập</h2>
+            <input type="text" id="loginEmail" placeholder="Nhập email...">
+<input type="password" id="loginPassword" placeholder="Nhập mật khẩu...">
+                <div class="form-group">
+                    <label>Tên đăng nhập hoặc Email</label>
+                    <input type="text" placeholder="Nhập tên đăng nhập...">
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" placeholder="Nhập mật khẩu...">
+                </div>
+                <button type="submit" class="submit-btn">Đăng Nhập</button>
+                <p style="text-align: center; margin-top: 1rem; color: #666;">
+                    Chưa có tài khoản? <a href="#" onclick="switchModal('login', 'signup')" style="color: #667eea;">Đăng ký ngay</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('signup')">&times;</span>
+            <h2>Đăng Ký</h2>
+            <form id="signupForm">
+
+                <div class="form-group">
+                    <label>Tên đăng nhập</label>
+                    <input type="text" placeholder="Nhập tên đăng nhập...">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="Nhập email...">
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" placeholder="Nhập mật khẩu...">
+                </div>
+                <button type="submit" class="submit-btn">Đăng Ký</button>
+                <p style="text-align: center; margin-top: 1rem; color: #666;">
+                    Đã có tài khoản? <a href="#" onclick="switchModal('signup', 'login')" style="color: #667eea;">Đăng nhập</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openModal(type) {
+            event.preventDefault();
+            document.getElementById(type + 'Modal').classList.add('active');
+        }
+
+        function closeModal(type) {
+            document.getElementById(type + 'Modal').classList.remove('active');
+        }
+
+        function switchModal(from, to) {
+            event.preventDefault();
+            closeModal(from);
+            openModal(to);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href') !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+<script>
+    // ĐĂNG KÝ
+    document.getElementById("signupForm").addEventListener("submit", function(e) {
+        e.preventDefault(); // chặn reload trang
+
+        // (demo) lưu user vào localStorage
+        localStorage.setItem("loggedIn", "true");
+
+        // chuyển sang trang user
+      window.location.href = "user-dashboard.html";
+    });
+</script>
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        localStorage.setItem("loggedIn", "true");
+       window.location.href = "user-dashboard.html";
+    });
+</script>
+<script>
+document.querySelector("#signupModal form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const inputs = this.querySelectorAll("input");
+    const username = inputs[0].value;
+    const email = inputs[1].value;
+
+    localStorage.setItem("loggedIn", "true");
+    localStorage.setItem("userName", username);
+    localStorage.setItem("userEmail", email);
+
+  window.location.href = "user-dashboard.html";
+});
+</script>
+<script>
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    // ADMIN
+    if (email === "admin@sub.vn" && password === "123456") {
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("role", "admin");
+        localStorage.setItem("userName", "Admin");
+        localStorage.setItem("userEmail", email);
+
+        window.location.href = "admin/index.html";
+        return;
+    }
+
+    // USER THƯỜNG
+    localStorage.setItem("loggedIn", "true");
+    localStorage.setItem("role", "user");
+    localStorage.setItem("userName", email.split("@")[0]);
+    localStorage.setItem("userEmail", email);
+
+    window.location.href = "user/index.html";
+});
+</script>

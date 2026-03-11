@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - SUB.VN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .user-profile {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 0 1rem 2rem;
+            border-radius: 10px;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: white;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 0.5rem;
+        }
+
+        .user-name {
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .user-email {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-item:hover,
+        .menu-item.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-left: 4px solid white;
+        }
+
+        .menu-icon {
+            font-size: 1.3rem;
+            width: 25px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 1.8rem;
+        }
+
+        .balance-display {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .balance-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(102,126,234,0.2);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .stat-icon.blue {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .stat-icon.green {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .stat-icon.orange {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .stat-info h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-info p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #667eea;
+        }
+
+        /* Order Form */
+        .order-form {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group select,
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .service-info {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .price-calculator {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .total-price {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #667eea;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status.processing {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .status.failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Service Cards */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .service-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(102,126,234,0.2);
+        }
+
+        .service-card.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .service-icon-large {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-card p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .sidebar .logo,
+            .user-profile .user-name,
+            .user-profile .user-email,
+            .menu-item span {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 70px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .balance-display {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .balance-card {
+                width: 100%;
+            }
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification.show {
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .notification.success {
+            border-left: 4px solid #11998e;
+        }
+
+        .notification.error {
+            border-left: 4px solid #f5576c;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">SUB.VN</div>
+        
+        <div class="user-profile">
+    <div class="user-avatar" id="sidebarAvatar"></div>
+    <div class="user-name" id="sidebarName"></div>
+    <div class="user-email" id="sidebarEmail"></div>
+</div>
+
+        <ul class="menu">
+            <li class="menu-item active" onclick="showSection('dashboard')">
+                <span class="menu-icon">🏠</span>
+                <span>Trang Chủ</span>
+            </li>
+            <li class="menu-item" onclick="showSection('new-order')">
+                <span class="menu-icon">➕</span>
+                <span>Tạo Đơn Mới</span>
+            </li>
+            <li class="menu-item" onclick="showSection('orders')">
+                <span class="menu-icon">📦</span>
+                <span>Đơn Hàng Của Tôi</span>
+            </li>
+            <li class="menu-item" onclick="showSection('services')">
+                <span class="menu-icon">⚙️</span>
+                <span>Dịch Vụ</span>
+            </li>
+            <li class="menu-item" onclick="showSection('deposit')">
+                <span class="menu-icon">💰</span>
+                <span>Nạp Tiền</span>
+            </li>
+            <li class="menu-item" onclick="showSection('transactions')">
+                <span class="menu-icon">💳</span>
+                <span>Lịch Sử</span>
+            </li>
+            <li class="menu-item" onclick="showSection('profile')">
+                <span class="menu-icon">👤</span>
+                <span>Tài Khoản</span>
+            </li>
+            <li class="menu-item" onclick="logout()">
+                <span class="menu-icon">🚪</span>
+                <span>Đăng Xuất</span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+       
+
+        <!-- Header -->
+        <div class="header">
+            <h1>👋 <h2>Xin chào, <span id="helloName"></span>!</h2>
+</h1>
+            <div class="balance-display">
+                <div class="balance-card">
+                    <div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">Số Dư Tài Khoản</div>
+                        <div class="balance-amount">250,000 VNĐ</div>
+                    </div>
+                    <span style="font-size: 2rem;">💰</span>
+                </div>
+                <button class="btn btn-success" onclick="showSection('deposit')">+ Nạp Tiền</button>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div class="content-section active" id="dashboard">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">📦</div>
+                    <div class="stat-info">
+                        <h3>24</h3>
+                        <p>Tổng Đơn Hàng</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">✅</div>
+                    <div class="stat-info">
+                        <h3>18</h3>
+                        <p>Đã Hoàn Thành</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange">⏳</div>
+                    <div class="stat-info">
+                        <h3>6</h3>
+                        <p>Đang Xử Lý</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <div class="section-header">
+                    <h2 class="section-title">Đơn Hàng Gần Đây</h2>
+                    <button class="btn btn-primary" onclick="showSection('orders')">Xem Tất Cả</button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Dịch Vụ</th>
+                            <th>Link</th>
+                            <th>Số Lượng</th>
+                            <th>Đã Chạy</th>
+                            <th>Trạng Thái</th>
+                            <th>Ngày Tạo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#10234</td>
+                            <td>Facebook Like</td>
+                            <td>facebook.com/post123</td>
+                            <td>1,000</td>
+                            <td>850</td>
+                            <td><span class="status success">Hoàn Thành</span></td>
+                            <td>07/02/2024</td>
+                        </tr>
+                        <tr>
+                            <td>#10233</td>
+                            <td>TikTok Follow</td>
+                            <td>tiktok.com/@user123</td>
+                            <td>500</td>
+                            <td>320</td>
+                            <td><span class="status processing">Đang Chạy</span></td>
+                            <td>07/02/2024</td>
+                        </tr>
+                        <tr>
+                            <td>#10232</td>
+                            <td>YouTube View</td>
+                            <td>youtube.com/watch?v=abc</td>
+                            <td>10,000</td>
+                            <td>10,000</td>
+                            <td><span class="status success">Hoàn Thành</span></td>
+                            <td>06/02/2024</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- New Order Section -->
+        <div class="content-section" id="new-order">
+            <div class="section-header">
+                <h2 class="section-title">Tạo Đơn Hàng Mới</h2>
+            </div>
+
+            <div class="order-form">
+                <div class="form-grid">
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Chọn Nền Tảng</label>
+                        <select id="platformSelect" onchange="filterServices()">
+                            <option value="">-- Chọn Nền Tảng --</option>
+                            
+                            <option value="facebook">📘 Facebook</option>
+                            <option value="tiktok">🎵 TikTok</option>
+                            <option value="youtube">▶️ YouTube</option>
+                            <option value="instagram">📷 Instagram</option>
+                            <option value="twitter">❌ Twitter/X</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Chọn dịch vụ</label>
+                        <select id="serviceSelect" onchange="updateServiceInfo()">
+                            <option value="">-- Chọn dịch vụ --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Link (URL)</label>
+                        <input type="url" id="linkInput" placeholder="Nhập link Facebook, TikTok, YouTube...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Số Lượng</label>
+                        <input type="number" id="quantityInput" placeholder="Nhập số lượng" oninput="calculatePrice()">
+                    </div>
+
+                    <div class="form-group">
+                        <div class="price-calculator">
+                            <div>Tổng Tiền</div>
+                            <div class="total-price" id="totalPrice">0 VNĐ</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-info" id="serviceInfo" style="display: none;">
+                    <h4 style="color: #667eea; margin-bottom: 1rem;">Thông Tin Dịch Vụ</h4>
+                    <div class="info-row">
+                        <span>Giá:</span>
+                        <strong id="pricePerK">0 VNĐ / 1000</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Tối Thiểu:</span>
+                        <strong id="minOrder">0</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Tối Đa:</span>
+                        <strong id="maxOrder">0</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Mô Tả:</span>
+                        <span id="serviceDesc">-</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-success" onclick="createOrder()" style="margin-top: 1.5rem; width: 100%; padding: 1rem; font-size: 1.1rem;">
+                    ✅ Tạo Đơn Hàng
+                </button>
+            </div>
+        </div>
+
+        <!-- Orders Section -->
+        <div class="content-section" id="orders">
+            <div class="section-header">
+                <h2 class="section-title">Đơn Hàng Của Tôi</h2>
+                <button class="btn btn-primary" onclick="showSection('new-order')">+ Tạo Đơn Mới</button>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Dịch Vụ</th>
+                        <th>Link</th>
+                        <th>Số Lượng</th>
+                        <th>Đã Chạy</th>
+                        <th>Còn Lại</th>
+                        <th>Giá</th>
+                        <th>Trạng Thái</th>
+                        <th>Ngày Tạo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#10234</td>
+                        <td>Facebook Like</td>
+                        <td><a href="#" style="color: #667eea;">facebook.com/post123</a></td>
+                        <td>1,000</td>
+                        <td>850</td>
+                        <td>150</td>
+                        <td>50,000 VNĐ</td>
+                        <td><span class="status processing">Đang Chạy</span></td>
+                        <td>07/02/2024 14:30</td>
+                    </tr>
+                    <tr>
+                        <td>#10233</td>
+                        <td>TikTok Follow</td>
+                        <td><a href="#" style="color: #667eea;">tiktok.com/@user123</a></td>
+                        <td>500</td>
+                        <td>500</td>
+                        <td>0</td>
+                        <td>75,000 VNĐ</td>
+                        <td><span class="status success">Hoàn Thành</span></td>
+                        <td>07/02/2024 12:15</td>
+                    </tr>
+                    <tr>
+                        <td>#10232</td>
+                        <td>YouTube View</td>
+                        <td><a href="#" style="color: #667eea;">youtube.com/watch?v=abc</a></td>
+                        <td>10,000</td>
+                        <td>10,000</td>
+                        <td>0</td>
+                        <td>120,000 VNĐ</td>
+                        <td><span class="status success">Hoàn Thành</span></td>
+                        <td>06/02/2024 18:45</td>
+                    </tr>
+                    <tr>
+                        <td>#10231</td>
+                        <td>Instagram Follow</td>
+                        <td><a href="#" style="color: #667eea;">instagram.com/user123</a></td>
+                        <td>2,000</td>
+                        <td>0</td>
+                        <td>2,000</td>
+                        <td>180,000 VNĐ</td>
+                        <td><span class="status pending">Chờ Xử Lý</span></td>
+                        <td>06/02/2024 16:20</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Services Section -->
+        <div class="content-section" id="services">
+            <div class="section-header">
+                <h2 class="section-title">Tất Cả Dịch Vụ</h2>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card" onclick="selectService('facebook-like')">
+                    <div class="service-icon-large">📘</div>
+                    <h3>Facebook Like</h3>
+                    <p>50,000 VNĐ / 1000</p>
+                    <p style="font-size: 0.85rem; margin-top: 0.5rem;">Min: 100 | Max: 50,000</p>
+                </div>
+
+                <div class="service-card" onclick="selectService('tiktok-follow')">
+                    <div class="service-icon-large">🎵</div>
+                    <h3>TikTok Follow</h3>
+                    <p>80,000 VNĐ / 1000</p>
+                    <p style="font-size: 0.85rem; margin-top: 0.5rem;">Min: 50 | Max: 20,000</p>
+                </div>
+
+                <div class="service-card" onclick="selectService('youtube-view')">
+                    <div class="service-icon-large">▶️</div>
+                    <h3>YouTube View</h3>
+                    <p>12,000 VNĐ / 1000</p>
+                    <p style="font-size: 0.85rem; margin-top: 0.5rem;">Min: 1,000 | Max: 1,000,000</p>
+                </div>
+
+                <div class="service-card" onclick="selectService('instagram-follow')">
+                    <div class="service-icon-large">📷</div>
+                    <h3>Instagram Follow</h3>
+                    <p>90,000 VNĐ / 1000</p>
+                    <p style="font-size: 0.85rem; margin-top: 0.5rem;">Min: 100 | Max: 30,000</p>
+                </div>
+
+                <div class="service-card" onclick="selectService('facebook-share')">
+                    <div class="service-icon-large">📘</div>
+                    <h3>Facebook Share</h3>
+                    <p>150,000 VNĐ / 1000</p>
+                    <p style="font-size: 0.85rem; margin-top: 0.5rem;">Min: 50 | Max: 10,000</p>
+                </div>
+
+                <div class="service-card" onclick="selectService('tiktok-like')">
+                    <div class="service-icon-large">🎵</div>
+                    <h3>TikTok Like</h3>
+                    <p>60,000 VNĐ / 1000</p>
+                    <p style="font-size: 0.85rem; margin-top: 0.5rem;">Min: 100 | Max: 50,000</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deposit Section -->
+        <div class="content-section" id="deposit">
+            <div class="section-header">
+                <h2 class="section-title">Nạp Tiền Vào Tài Khoản</h2>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Phương Thức Thanh Toán</label>
+                    <select id="paymentMethod">
+                        <option value="momo">💳 MoMo</option>
+                        <option value="bank">🏦 Chuyển Khoản Ngân Hàng</option>
+                        <option value="card">💳 Thẻ ATM/Visa</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Số Tiền Nạp (VNĐ)</label>
+                    <input type="number" id="depositAmount" placeholder="Nhập số tiền">
+                </div>
+            </div>
+
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin: 1.5rem 0;">
+                <h4 style="color: #667eea; margin-bottom: 1rem;">Thông Tin Chuyển Khoản</h4>
+                <div class="info-row">
+                    <span>Ngân Hàng:</span>
+                    <strong>Vietcombank</strong>
+                </div>
+                <div class="info-row">
+                    <span>Số Tài Khoản:</span>
+                    <strong>1234567890</strong>
+                </div>
+                <div class="info-row">
+                    <span>Chủ Tài Khoản:</span>
+                    <strong>NGUYEN VAN A</strong>
+                </div>
+                <div class="info-row">
+                    <span>Nội Dung:</span>
+                    <strong>NAPSUB [Email của bạn]</strong>
+                </div>
+                <div class="info-row">
+                    <span>Liên Hệ Hỗ Trợ:</span>
+                    <strong>Zalo: 0972562495</strong>
+                </div>
+            </div>
+
+            <button class="btn btn-success" onclick="processDeposit()" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
+                💰 Xác Nhận Nạp Tiền
+            </button>
+        </div>
+
+        <!-- Transactions Section -->
+        <div class="content-section" id="transactions">
+            <div class="section-header">
+                <h2 class="section-title">Lịch Sử Giao Dịch</h2>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Loại</th>
+                        <th>Số Tiền</th>
+                        <th>Số Dư Trước</th>
+                        <th>Số Dư Sau</th>
+                        <th>Ghi Chú</th>
+                        <th>Thời Gian</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#T001</td>
+                        <td><span class="status success">Nạp Tiền</span></td>
+                        <td style="color: #11998e; font-weight: bold;">+500,000 VNĐ</td>
+                        <td>100,000 VNĐ</td>
+                        <td>600,000 VNĐ</td>
+                        <td>Nạp qua MoMo</td>
+                        <td>07/02/2024 14:30</td>
+                    </tr>
+                    <tr>
+                        <td>#T002</td>
+                        <td><span class="status pending">Thanh Toán</span></td>
+                        <td style="color: #f5576c; font-weight: bold;">-75,000 VNĐ</td>
+                        <td>600,000 VNĐ</td>
+                        <td>525,000 VNĐ</td>
+                        <td>Đơn #10233</td>
+                        <td>07/02/2024 12:15</td>
+                    </tr>
+                    <tr>
+                        <td>#T003</td>
+                        <td><span class="status pending">Thanh Toán</span></td>
+                        <td style="color: #f5576c; font-weight: bold;">-120,000 VNĐ</td>
+                        <td>525,000 VNĐ</td>
+                        <td>405,000 VNĐ</td>
+                        <td>Đơn #10232</td>
+                        <td>06/02/2024 18:45</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Profile Section -->
+       <div class="content-section" id="profile">
+    <div class="section-header">
+        <h2 class="section-title">Thông Tin Tài Khoản</h2>
+    </div>
+
+    <div class="form-grid">
+        <div class="form-group">
+            <label>Họ và Tên</label>
+            <input type="text" id="userName">
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="userEmail" disabled>
+        </div>
+
+        <div class="form-group">
+            <label>Số Điện Thoại</label>
+            <input type="tel" id="userPhone">
+        </div>
+
+        <div class="form-group">
+            <label>Ngày Đăng Ký</label>
+            <input type="text" id="userCreatedAt" disabled>
+        </div>
+
+        <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Mật Khẩu Mới</label>
+            <input type="password" id="newPassword" placeholder="Nhập mật khẩu mới (để trống nếu không đổi)">
+        </div>
+
+        <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Xác Nhận Mật Khẩu</label>
+            <input type="password" id="confirmPassword" placeholder="Nhập lại mật khẩu mới">
+        </div>
+    </div>
+</div>
+
+            <button class="btn btn-success" onclick="updateProfile()" style="margin-top: 1rem;">
+                💾 Cập Nhật Thông Tin
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <span id="notificationIcon">✅</span>
+        <span id="notificationText">Thông báo</span>
+    </div>
+    <!-- Debug Panel (press Ctrl+D to toggle) -->
+    <div class="debug-panel" id="debugPanel">
+        <h4 style="margin-bottom: 0.5rem;">🔧 Debug Info</h4>
+        <div id="debugInfo" style="font-family: monospace; font-size: 0.75rem;"></div>
+    </div>
+
+    <script>
+
+
+// LOAD SERVICES FROM BACKEND (JustAnotherPanel)
+fetch('http://localhost:3000/api/services/jap')
+  .then(res => {
+      if (!res.ok) throw new Error("Lỗi Server 500"); 
+      return res.json();
+  })
+  .then(json => {
+    // Backend trả về json.services
+    const data = json.services || []; 
+    
+    services = {}; 
+
+    data.forEach(s => {
+      const platform = s.category.toLowerCase();
+      // Phân loại đơn giản để test
+      let key = "";
+      if (platform.includes("facebook")) key = "facebook";
+      else if (platform.includes("tiktok")) key = "tiktok";
+      
+      if (key) {
+        if (!services[key]) services[key] = [];
+        services[key].push({
+          id: s.service,
+          name: s.name,
+          price: parseFloat(s.rate)
+        });
+      }
+    });
+    console.log('Services loaded successfully');
+  })
+ .catch(err => {
+    console.error('Lỗi fetch:', err);
+    console.error('Status:', err?.status);
+    console.error('Response:', err?.response);
+});
+
+
+
+        // Create order
+        function createOrder() {
+            const link = document.getElementById('linkInput').value;
+            const quantity = parseInt(document.getElementById('quantityInput').value);
+            
+            if (!currentService) {
+                showNotification('Vui lòng chọn dịch vụ!', 'error');
+                return;
+            }
+            
+            if (!link) {
+                showNotification('Vui lòng nhập link!', 'error');
+                return;
+            }
+            
+            if (!quantity || quantity < currentService.min || quantity > currentService.max) {
+                showNotification(`Số lượng phải từ ${currentService.min} đến ${currentService.max}!`, 'error');
+                return;
+            }
+            
+            showNotification('Đơn hàng đã được tạo thành công!', 'success');
+            
+            // Reset form
+            document.getElementById('platformSelect').value = '';
+            document.getElementById('serviceSelect').innerHTML = '<option value="">-- Chọn dịch vụ --</option>';
+            document.getElementById('linkInput').value = '';
+            document.getElementById('quantityInput').value = '';
+            document.getElementById('serviceInfo').style.display = 'none';
+            document.getElementById('totalPrice').textContent = '0 VNĐ';
+            currentService = null;
+        }
+
+        // Process deposit
+        function processDeposit() {
+            const amount = document.getElementById('depositAmount').value;
+            
+            if (!amount || amount < 10000) {
+                showNotification('Số tiền nạp tối thiểu là 10,000 VNĐ!', 'error');
+                return;
+            }
+            
+            showNotification('Yêu cầu nạp tiền đã được ghi nhận! Vui lòng chuyển khoản theo thông tin trên hoặc liên hệ Zalo: 0972562495', 'success');
+            document.getElementById('depositAmount').value = '';
+        }
+
+        // Update profile
+        function updateProfile() {
+            showNotification('Thông tin đã được cập nhật thành công!', 'success');
+        }
+
+        // Select service
+        function selectService(serviceId) {
+            showNotification('Vui lòng vào mục "Tạo Đơn Mới" để đặt hàng dịch vụ này!', 'success');
+            showSection('new-order');
+        }
+
+        // Show section
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('Bạn có chắc muốn đăng xuất?')) {
+                window.location.href = 'sub-website.html';
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            const icon = document.getElementById('notificationIcon');
+            const text = document.getElementById('notificationText');
+            
+            text.textContent = message;
+            notification.className = 'notification show ' + type;
+            icon.textContent = type === 'success' ? '✅' : '❌';
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+    </script>
+</body> 
+<script>
+  // Check login
+  if (localStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "../index.html";
+  }
+
+  const name = localStorage.getItem("userName") || "User";
+  const email = localStorage.getItem("userEmail") || "Chưa có email";
+
+  // Header / lời chào
+  const helloName = document.getElementById("helloName");
+  if (helloName) helloName.innerText = name;
+
+  // Text email
+  const emailText = document.getElementById("userEmailText");
+  if (emailText) emailText.innerText = email;
+
+  // Input
+  const nameInput = document.getElementById("userName");
+  if (nameInput) nameInput.value = name;
+
+  const emailInput = document.getElementById("userEmail");
+  if (emailInput) emailInput.value = email;
+</script>
+</body>
+<script>
+const API = "http://localhost:3000/api/services/jap";
+let services = {};
+let currentService = null; 
+
+/* ======================
+   LOAD SERVICES
+====================== */
+async function loadServices() {
+    try {
+        const res = await fetch(API);
+        const data = await res.json();
+        console.log("Dữ liệu nhận được:", data);
+        // Lấy mảng dịch vụ từ data hoặc data.data
+        const allServices = Array.isArray(data) ? data : (data.data || []);
+        
+        const select = document.getElementById("serviceSelect");
+        if (!select) return;
+
+        select.innerHTML = '<option value="">-- Chọn dịch vụ --</option>';
+
+        allServices.forEach(s => {
+            const opt = document.createElement("option");
+            opt.value = s.service;
+            // Hiển thị Tên - Giá - Danh mục (để bạn dễ kiểm tra)
+            opt.textContent = `[${s.category}] ${s.name} - ${s.rate}đ`;
+            
+            // Lưu dữ liệu vào dataset để dùng sau
+            opt.dataset.rate = s.rate;
+            opt.dataset.min = s.min;
+            opt.dataset.max = s.max;
+            
+            select.appendChild(opt);
+        });
+
+        console.log("Đã tải dịch vụ thành công:", allServices.length);
+    } catch (err) {
+        console.error("Lỗi khi tải dịch vụ:", err);
+        alert("Không thể kết nối đến server để lấy dịch vụ!");
+    }
+}
+/* ======================
+   PLATFORM CHANGE
+====================== */
+document.getElementById("platformSelect")
+  .addEventListener("change", e => {
+    const platform = e.target.value;
+    const select = document.getElementById("serviceSelect");
+
+    select.innerHTML = `<option value="">-- Chọn dịch vụ --</option>`;
+    currentService = null;
+
+    if (!services[platform]) return;
+
+    services[platform].forEach(s => {
+      const opt = document.createElement("option");
+      opt.value = s.id;
+      opt.textContent = `${s.name} | ${s.rate}đ`;
+      opt.dataset.service = JSON.stringify(s);
+      select.appendChild(opt);
+    });
+  });
+
+/* ======================
+   SERVICE CHANGE
+====================== */
+document.getElementById("serviceSelect")
+  .addEventListener("change", e => {
+    const opt = e.target.selectedOptions[0];
+    if (!opt.dataset.service) return;
+
+    currentService = JSON.parse(opt.dataset.service);
+
+    document.getElementById("pricePerK").innerText =
+      currentService.rate + "đ / 1000";
+
+    document.getElementById("minOrder").innerText =
+      currentService.min;
+
+    document.getElementById("maxOrder").innerText =
+      currentService.max;
+
+    calculatePrice();
+  });
+
+/* ======================
+   PRICE
+====================== */
+function calculatePrice() {
+  if (!currentService) return;
+
+  const qty = Number(document.getElementById("quantityInput").value || 0);
+  const total = (qty / 1000) * currentService.rate;
+
+  document.getElementById("totalPrice").innerText =
+    Math.round(total).toLocaleString("vi-VN") + " VNĐ";
+}
+
+/* ======================
+   CREATE ORDER (MOCK)
+====================== */
+async function handleCreateOrder() {
+    const serviceId = document.getElementById('serviceSelect').value;
+    if (!serviceId) {
+        alert("Vui lòng chọn dịch vụ trước!");
+        return; 
+    }
+    // Code gửi đơn hàng tiếp theo...
+}
+
+
+</script>
+
+<script>
+  // Load services
+    fetch('http://localhost:3000/api/services/jap')
+        .then(res => res.json())
+        .then(data => {
+            const serviceSelect = document.getElementById('serviceSelect');
+            if (!serviceSelect) 
+
+            serviceSelect.innerHTML = '<option value="">-- Chọn dịch vụ --</option>';
+
+            data.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.service;
+                opt.textContent = s.name + ' | ' + s.rate + 'đ';
+                opt.dataset.service = JSON.stringify(s);
+                serviceSelect.appendChild(opt);
+            });
+        })
+        .catch(err => console.error(err));
+
+    function updateServiceInfo() {
+        const select = document.getElementById('serviceSelect');
+        const opt = select.options[select.selectedIndex];
+        if (!opt.dataset.service) return;
+
+        currentService = JSON.parse(opt.dataset.service);
+
+        document.getElementById('pricePerK').innerText =
+            currentService.rate.toLocaleString() + 'đ / 1000';
+
+        document.getElementById('minOrder').innerText = currentService.min;
+        document.getElementById('maxOrder').innerText = currentService.max;
+
+        calculatePrice();
+    }
+
+    function calculatePrice() {
+        if (!currentService) return;
+
+        const qty = parseInt(document.getElementById('quantityInput').value || 0);
+        const total = (qty / 1000) * currentService.rate;
+
+        document.getElementById('totalPrice').innerText =                                
+            Math.round(total).toLocaleString() + 'đ';
+    }
+
+    
+      
+function createOrder() {
+  if (!currentService) {
+    alert('Vui lòng chọn dịch vụ');
+    return;
+  }
+
+  const link = document.getElementById('linkInput').value;
+  const quantity = document.getElementById('quantityInput').value;
+
+  if (!link || !quantity) {
+    alert('Thiếu link hoặc số lượng');
+    return;
+  }
+
+ 
+}
+
+
+// 1. Load TẤT CẢ dịch vụ khi mở trang (CHỈ 1 LẦN)
+document.addEventListener('DOMContentLoaded', async () => {
+  const res = await fetch('http://localhost:3000/api/services/jap');
+  const json = await res.json();
+
+  if (!json.success) {
+    console.error('Không load được dịch vụ');
+    return;
+  }
+
+  ALL_SERVICES = json.data;
+});
+
+// 2. Khi chọn NỀN TẢNG → lọc dịch vụ
+function loadServices(platform) {
+  const serviceSelect = document.getElementById('serviceSelect');
+
+  serviceSelect.innerHTML = '<option value="">-- Chọn dịch vụ --</option>';
+  currentService = null;
+
+  if (!platform) return;
+
+  const filtered = ALL_SERVICES.filter(
+    s => s.platform === platform
+  );
+
+  if (filtered.length === 0) {
+    serviceSelect.innerHTML =
+      '<option value="">Không có dịch vụ</option>';
+    return;
+  }
+
+  filtered.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.service;
+    opt.textContent = `${s.name} | ${s.rate}đ`;
+    opt.dataset.service = JSON.stringify(s);
+    serviceSelect.appendChild(opt);
+  });
+}
+
+
+async function createOrder() {
+    const res = await fetch('http://localhost:3000/api/orders/create', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            service: currentService.id,
+            link: document.getElementById('linkInput').value,
+            quantity: document.getElementById('quantityInput').value
+        })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+        alert('🎉 Tạo đơn thành công!');
+    } else {
+        alert('❌ Lỗi: ' + data.message);
+    }
+}
+</script>
+</body>
+
+</html>
+
+<script>
+const API_BASE = "http://localhost:3000/api";
+
+/* =======================
+   LOAD SERVICES
+======================= */
+
+/* =======================
+   UPDATE SERVICE INFO
+======================= */
+function updateServiceInfo() {
+  const select = document.getElementById("serviceSelect");
+  const option = select.options[select.selectedIndex];
+
+  if (!option || !option.dataset.rate) return;
+
+  document.getElementById("pricePerK").innerText =
+    option.dataset.rate + " VNĐ";
+
+  document.getElementById("minOrder").innerText =
+    option.dataset.min;
+
+  document.getElementById("maxOrder").innerText =
+    option.dataset.max;
+
+  calculatePrice();
+}
+
+/* =======================
+   CALCULATE PRICE
+======================= */
+function calculatePrice() {
+  const select = document.getElementById("serviceSelect");
+  const option = select.options[select.selectedIndex];
+  const quantity = Number(document.getElementById("quantityInput").value);
+
+  if (!option || !option.dataset.rate || !quantity) {
+    document.getElementById("totalPrice").innerText = "0 VNĐ";
+    return;
+  }
+
+  const rate = Number(option.dataset.rate);
+  const total = (rate * quantity) / 1000;
+
+  document.getElementById("totalPrice").innerText =
+    total.toLocaleString("vi-VN") + " VNĐ";
+}
+function filterServices() {
+  const platform = document.getElementById("platformSelect").value;
+  const serviceSelect = document.getElementById("serviceSelect");
+
+  if (!serviceSelect) return;
+
+  // Nếu chưa chọn nền tảng thì hiện tất cả
+  if (!platform) {
+    for (let option of serviceSelect.options) {
+      option.style.display = "block";
+    }
+    return;
+  }
+
+  // Lọc theo tên nền tảng nằm trong name
+  for (let option of serviceSelect.options) {
+    if (!option.value) continue;
+
+    const text = option.textContent.toLowerCase();
+
+    if (text.includes(platform.toLowerCase())) {
+      option.style.display = "block";
+    } else {
+      option.style.display = "none";
+    }
+  }
+}
+
+</script>
