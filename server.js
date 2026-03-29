@@ -201,11 +201,11 @@ app.listen(PORT, () => {
 ╔═══════════════════════════════════════════════════╗
 ║           SUB.VN API SERVER                       ║
 ╚═══════════════════════════════════════════════════╝
-    
+
 ✅ Server running on port ${PORT}
 🌍 Environment: ${process.env.NODE_ENV}
-📡 API Endpoint: http://localhost:${PORT}/api
-📊 Health Check: http://localhost:${PORT}/health
+📡 API Endpoint: ${PORT}/api
+📊 Health Check: ${PORT}/health
     
 Contact: ${process.env.CONTACT_EMAIL}
 Zalo: ${process.env.CONTACT_ZALO}
