@@ -29,6 +29,7 @@ const { initCronjobs } = require('./services/cronjobs');
 
 // Initialize Express
 const app = express();
+app.use(express.json()); // Dòng này là bắt buộc để đọc được req.body
 app.use(express.static(__dirname));
 app.use(cors());
 app.get('/', (req, res) => {

@@ -1,17 +1,16 @@
 const express = require('express');
 const router = express.Router();
-// Sửa đường dẫn gọi file db.js (Dùng dấu chấm để lùi 1 thư mục ra ngoài)
-const db = require('../db'); 
+const db = require('../db'); // Đảm bảo đường dẫn này đúng với file db.js của bạn
 
-// 1. Route Đăng nhập
-router.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    // Tạm thời để check route, sau này bạn viết code SELECT ở đây
-    res.json({ message: 'Auth route works', user: username });
-});
-
-// 2. Route Đăng ký (Đã sửa để lưu vào Database)
+// 1. Route Đăng ký (Đã sửa lỗi undefined req.body)
 router.post('/register', (req, res) => {
+    // Kiểm tra nếu req.body không tồn tại
+    if (!req.body || !req.body.username) {
+        return res.status(400).json({ 
+            error: "Lỗi: Dữ liệu gửi lên bị trống! Hãy kiểm tra lại server.js đã có app.use(express.json()) chưa." 
+        });
+    }
+
     const { username, email, phone, password } = req.body;
     const sql = "INSERT INTO users (username, email, phone, password) VALUES (?, ?, ?, ?)";
 
@@ -19,12 +18,13 @@ router.post('/register', (req, res) => {
     db.run(sql, [username, email, phone, password], function(err) {
         if (err) {
             console.error("❌ Lỗi SQL:", err.message);
-            return res.status(500).json({ error: 'Đăng ký thất bại!' });
+            return res.status(500).json({ error: 'Đăng ký thất bại!', details: err.message });
         }
-        res.json({ 
+        res.json({
             message: 'Chúc mừng! Bạn đã đăng ký thành công.',
-            userId: this.lastID 
+            userId: this.lastID
         });
     });
 });
-module.exports = router
+
+module.exports = router;
