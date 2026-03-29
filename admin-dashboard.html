@@ -16,28 +16,17 @@
         .main-content { margin-left: 250px; padding: 2rem; }
         .header { background: white; padding: 1.5rem 2rem; border-radius: 10px; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .header h1 { color: #667eea; font-size: 1.8rem; }
-        .user-info { display: flex; align-items: center; gap: 1rem; }
-        .avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-        .stat-card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: transform 0.3s; }
-        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 5px 20px rgba(102,126,234,0.2); }
-        .stat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        .stat-icon { width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
-        .stat-icon.blue { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-        .stat-icon.green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; }
-        .stat-icon.orange { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
-        .stat-icon.purple { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; }
+        .stat-card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .stat-value { font-size: 2rem; font-weight: bold; color: #333; }
         .stat-label { color: #666; margin-top: 0.5rem; }
-        .stat-change { font-size: 0.9rem; margin-top: 0.5rem; }
-        .stat-change.up { color: #11998e; }
         .content-section { background: white; padding: 2rem; border-radius: 10px; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: none; }
         .content-section.active { display: block; }
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid #f0f0f0; }
-        .section-title { font-size: 1.5rem; color: #667eea; }
+        .section-title { font-size: 1.5rem; color: #667eea; margin-bottom: 1.5rem; }
         .btn { padding: 0.6rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-size: 0.95rem; transition: all 0.3s; }
         .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
         .btn-success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; }
+        .btn-danger { background: #ff4757; color: white; }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .data-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
         .data-table th { background: #f8f9fa; padding: 1rem; text-align: left; font-weight: 600; color: #667eea; border-bottom: 2px solid #e9ecef; }
@@ -50,149 +39,468 @@
         .form-group { margin-bottom: 1.5rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; color: #333; font-weight: 500; }
         .form-group input, .form-group select { width: 100%; padding: 0.8rem; border: 2px solid #e9ecef; border-radius: 8px; font-size: 1rem; }
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-        .contact-info-box { background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin: 1.5rem 0; }
-        .contact-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #e9ecef; }
-        @media (max-width: 768px) { .sidebar { width: 70px; } .main-content { margin-left: 70px; } .sidebar .logo, .menu-item span { display: none; } }
+        .loading { text-align: center; padding: 2rem; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; }
+        .modal.active { display: flex; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 2rem; border-radius: 15px; max-width: 500px; width: 90%; }
     </style>
 </head>
 <body>
     <div class="sidebar">
-        <div class="logo">SUB.VN</div>
+        <div class="logo">ADMIN PANEL</div>
         <ul class="menu">
             <li class="menu-item active" onclick="showSection('dashboard')"><span class="menu-icon">📊</span><span>Dashboard</span></li>
             <li class="menu-item" onclick="showSection('orders')"><span class="menu-icon">📦</span><span>Đơn Hàng</span></li>
-            <li class="menu-item" onclick="showSection('users')"><span class="menu-icon">👥</span><span>Khách Hàng</span></li>
+            <li class="menu-item" onclick="showSection('users')"><span class="menu-icon">👥</span><span>Người Dùng</span></li>
+            <li class="menu-item" onclick="showSection('deposits')"><span class="menu-icon">💰</span><span>Nạp Tiền</span></li>
             <li class="menu-item" onclick="showSection('services')"><span class="menu-icon">⚙️</span><span>Dịch Vụ</span></li>
-            <li class="menu-item" onclick="showSection('settings')"><span class="menu-icon">🔧</span><span>Cài Đặt</span></li>
             <li class="menu-item" onclick="logout()"><span class="menu-icon">🚪</span><span>Đăng Xuất</span></li>
         </ul>
     </div>
 
     <div class="main-content">
         <div class="header">
-            <h1>👋 Xin chào, Admin SUB.VN!</h1>
-            <div class="user-info">
-                <div><div style="font-weight: bold;">Administrator</div><div style="font-size: 0.85rem; color: #666;">admin@sub.vn</div></div>
-                <div class="avatar">A</div>
-            </div>
+            <h1>👋 Admin Dashboard</h1>
+            <div>Administrator</div>
         </div>
 
+        <!-- Dashboard -->
         <div class="content-section active" id="dashboard">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-header">
-                        <div><div class="stat-value">103,875</div><div class="stat-label">Tổng Đơn Hàng</div><div class="stat-change up">↑ 12.5% so với tháng trước</div></div>
-                        <div class="stat-icon blue">📦</div>
-                    </div>
+                    <div class="stat-value" id="totalOrders">0</div>
+                    <div class="stat-label">Tổng Đơn Hàng</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-header">
-                        <div><div class="stat-value">4,447</div><div class="stat-label">Khách Hàng</div><div class="stat-change up">↑ 8.3% so với tháng trước</div></div>
-                        <div class="stat-icon green">👥</div>
-                    </div>
+                    <div class="stat-value" id="totalUsers">0</div>
+                    <div class="stat-label">Tổng Người Dùng</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-header">
-                        <div><div class="stat-value">2.4B VNĐ</div><div class="stat-label">Doanh Thu Tháng</div><div class="stat-change up">↑ 15.2% so với tháng trước</div></div>
-                        <div class="stat-icon orange">💰</div>
-                    </div>
+                    <div class="stat-value" id="totalRevenue">0 VNĐ</div>
+                    <div class="stat-label">Tổng Doanh Thu</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-header">
-                        <div><div class="stat-value">156</div><div class="stat-label">Đối Tác</div><div class="stat-change up">↑ 3 đối tác mới</div></div>
-                        <div class="stat-icon purple">🤝</div>
-                    </div>
+                    <div class="stat-value" id="pendingDeposits">0</div>
+                    <div class="stat-label">Nạp Tiền Chờ Duyệt</div>
                 </div>
             </div>
 
             <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-                <div class="section-header">
-                    <h2 class="section-title">Đơn Hàng Gần Đây</h2>
-                    <button class="btn btn-primary" onclick="showSection('orders')">Xem Tất Cả</button>
-                </div>
-                <table class="data-table">
-                    <thead><tr><th>ID</th><th>Khách Hàng</th><th>Dịch Vụ</th><th>Số Lượng</th><th>Giá</th><th>Trạng Thái</th><th>Thời Gian</th></tr></thead>
-                    <tbody>
-                        <tr><td>#10234</td><td>Nguyễn Văn A</td><td>Facebook Like</td><td>1,000</td><td>50,000 VNĐ</td><td><span class="status success">Hoàn Thành</span></td><td>5 phút trước</td></tr>
-                        <tr><td>#10233</td><td>Trần Thị B</td><td>TikTok Follow</td><td>500</td><td>75,000 VNĐ</td><td><span class="status pending">Đang Xử Lý</span></td><td>12 phút trước</td></tr>
-                    </tbody>
+                <h2 class="section-title">Đơn Hàng Mới Nhất</h2>
+                <div class="loading" id="dashboardLoading">Đang tải...</div>
+                <table class="data-table" id="dashboardTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>Mã Đơn</th>
+                            <th>User</th>
+                            <th>Dịch Vụ</th>
+                            <th>Số Lượng</th>
+                            <th>Giá</th>
+                            <th>Trạng Thái</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dashboardBody"></tbody>
                 </table>
             </div>
         </div>
 
+        <!-- Orders -->
         <div class="content-section" id="orders">
-            <div class="section-header">
-                <h2 class="section-title">Quản Lý Đơn Hàng</h2>
-                <button class="btn btn-primary">+ Tạo Đơn Mới</button>
-            </div>
-            <table class="data-table">
-                <thead><tr><th>ID</th><th>Khách Hàng</th><th>Dịch Vụ</th><th>Link</th><th>Số Lượng</th><th>Trạng Thái</th></tr></thead>
-                <tbody>
-                    <tr><td>#10234</td><td>nguyenvana@email.com</td><td>Facebook Like</td><td>facebook.com/post123</td><td>1,000</td><td><span class="status success">Hoàn Thành</span></td></tr>
-                </tbody>
+            <h2 class="section-title">Quản Lý Đơn Hàng</h2>
+            <div class="loading" id="ordersLoading">Đang tải...</div>
+            <table class="data-table" id="ordersTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Mã Đơn</th>
+                        <th>User</th>
+                        <th>Dịch Vụ</th>
+                        <th>Link</th>
+                        <th>Số Lượng</th>
+                        <th>Giá</th>
+                        <th>Trạng Thái</th>
+                        <th>Ngày Tạo</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersBody"></tbody>
             </table>
         </div>
 
+        <!-- Users -->
         <div class="content-section" id="users">
-            <div class="section-header">
-                <h2 class="section-title">Quản Lý Khách Hàng</h2>
-                <button class="btn btn-primary">+ Thêm Khách Hàng</button>
-            </div>
-            <table class="data-table">
-                <thead><tr><th>ID</th><th>Tên</th><th>Email</th><th>Số Dư</th><th>Ngày Đăng Ký</th></tr></thead>
-                <tbody>
-                    <tr><td>#001</td><td>Nguyễn Văn A</td><td>nguyenvana@email.com</td><td>250,000 VNĐ</td><td>01/01/2024</td></tr>
-                </tbody>
+            <h2 class="section-title">Quản Lý Người Dùng</h2>
+            <div class="loading" id="usersLoading">Đang tải...</div>
+            <table class="data-table" id="usersTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Số Dư</th>
+                        <th>Tổng Chi</th>
+                        <th>Trạng Thái</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody id="usersBody"></tbody>
             </table>
         </div>
 
+        <!-- Deposits -->
+        <div class="content-section" id="deposits">
+            <h2 class="section-title">Quản Lý Nạp Tiền</h2>
+            <div class="loading" id="depositsLoading">Đang tải...</div>
+            <table class="data-table" id="depositsTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Mã GD</th>
+                        <th>User</th>
+                        <th>Số Tiền</th>
+                        <th>Phương Thức</th>
+                        <th>Trạng Thái</th>
+                        <th>Ngày Tạo</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody id="depositsBody"></tbody>
+            </table>
+        </div>
+
+        <!-- Services -->
         <div class="content-section" id="services">
-            <div class="section-header">
-                <h2 class="section-title">Quản Lý Dịch Vụ</h2>
-                <button class="btn btn-primary">+ Thêm Dịch Vụ Mới</button>
-            </div>
-            <table class="data-table">
-                <thead><tr><th>ID</th><th>Tên Dịch Vụ</th><th>Nền Tảng</th><th>Giá/1000</th><th>Trạng Thái</th></tr></thead>
-                <tbody>
-                    <tr><td>#S001</td><td>Facebook Like</td><td>📘 Facebook</td><td>50,000 VNĐ</td><td><span class="status success">Hoạt Động</span></td></tr>
-                </tbody>
+            <h2 class="section-title">Quản Lý Dịch Vụ</h2>
+            <button class="btn btn-primary" onclick="openAddService()">+ Thêm Dịch Vụ</button>
+            <div class="loading" id="servicesLoading">Đang tải...</div>
+            <table class="data-table" id="servicesTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên</th>
+                        <th>Platform</th>
+                        <th>Giá/1000</th>
+                        <th>Min</th>
+                        <th>Max</th>
+                        <th>Trạng Thái</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody id="servicesBody"></tbody>
             </table>
         </div>
+    </div>
 
-        <div class="content-section" id="settings">
-            <div class="section-header">
-                <h2 class="section-title">Cài Đặt Hệ Thống</h2>
+    <!-- Edit User Modal -->
+    <div class="modal" id="editUserModal">
+        <div class="modal-content">
+            <h2 class="section-title">Chỉnh Sửa Người Dùng</h2>
+            <div class="form-group">
+                <label>Số dư mới</label>
+                <input type="number" id="editUserBalance" placeholder="100000">
             </div>
-
-            <div class="contact-info-box">
-                <h3 style="color: #667eea; margin-bottom: 1rem;">Thông Tin Liên Hệ SUB.VN</h3>
-                <div class="contact-row"><span>Tên Website:</span><strong>SUB.VN</strong></div>
-                <div class="contact-row"><span>Email:</span><strong>dwen.khachieu@gmail.com</strong></div>
-                <div class="contact-row"><span>Zalo:</span><strong>0972562495</strong></div>
-                <div class="contact-row"><span>Facebook:</span><strong>OnlyLove</strong></div>
+            <div style="display: flex; gap: 1rem;">
+                <button class="btn btn-primary" onclick="saveUserEdit()">Lưu</button>
+                <button class="btn btn-danger" onclick="closeModal('editUser')">Hủy</button>
             </div>
-
-            <div class="form-grid">
-                <div class="form-group"><label>Tên Website</label><input type="text" value="SUB.VN"></div>
-                <div class="form-group"><label>Email Liên Hệ</label><input type="email" value="dwen.khachieu@gmail.com"></div>
-                <div class="form-group"><label>Zalo</label><input type="tel" value="0972562495"></div>
-                <div class="form-group"><label>Facebook</label><input type="text" value="OnlyLove"></div>
-            </div>
-            <button class="btn btn-success">💾 Lưu Thay Đổi</button>
         </div>
     </div>
 
     <script>
+        const API_URL = 'http://localhost:3000/api';
+        let token = localStorage.getItem('token');
+        let user = JSON.parse(localStorage.getItem('user') || '{}');
+        let editingUserId = null;
+
+        // Check admin
+        if (!token || user.role !== 'admin') {
+            alert('Bạn không có quyền truy cập!');
+            window.location.href = 'index.html';
+        }
+
+        // Initialize
+        window.addEventListener('load', function() {
+            loadDashboard();
+        });
+
+        // Load dashboard
+        async function loadDashboard() {
+            try {
+                const response = await fetch(`${API_URL}/admin/stats`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        document.getElementById('totalOrders').textContent = data.data.total_orders || 0;
+                        document.getElementById('totalUsers').textContent = data.data.total_users || 0;
+                        document.getElementById('totalRevenue').textContent = formatMoney(data.data.total_revenue || 0);
+                        document.getElementById('pendingDeposits').textContent = data.data.pending_deposits || 0;
+                    }
+                }
+
+                loadRecentOrders();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Load recent orders
+        async function loadRecentOrders() {
+            const loading = document.getElementById('dashboardLoading');
+            const table = document.getElementById('dashboardTable');
+            const tbody = document.getElementById('dashboardBody');
+
+            try {
+                const response = await fetch(`${API_URL}/admin/orders?limit=10`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await response.json();
+                loading.style.display = 'none';
+
+                if (data.success) {
+                    tbody.innerHTML = data.data.orders.map(order => `
+                        <tr>
+                            <td>${order.order_code}</td>
+                            <td>${order.username}</td>
+                            <td>${order.service_name}</td>
+                            <td>${formatNumber(order.quantity)}</td>
+                            <td>${formatMoney(order.price)}</td>
+                            <td><span class="status ${getStatusClass(order.status)}">${getStatusText(order.status)}</span></td>
+                        </tr>
+                    `).join('');
+                    table.style.display = 'table';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Load users
+        async function loadUsers() {
+            const loading = document.getElementById('usersLoading');
+            const table = document.getElementById('usersTable');
+            const tbody = document.getElementById('usersBody');
+
+            loading.style.display = 'block';
+            table.style.display = 'none';
+
+            try {
+                const response = await fetch(`${API_URL}/admin/users`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await response.json();
+                loading.style.display = 'none';
+
+                if (data.success) {
+                    tbody.innerHTML = data.data.users.map(user => `
+                        <tr>
+                            <td>${user.id}</td>
+                            <td>${user.username}</td>
+                            <td>${user.email}</td>
+                            <td>${formatMoney(user.balance)}</td>
+                            <td>${formatMoney(user.total_spent || 0)}</td>
+                            <td><span class="status ${user.status === 'active' ? 'success' : 'failed'}">${user.status}</span></td>
+                            <td><button class="btn btn-primary" onclick="editUser(${user.id})">Sửa</button></td>
+                        </tr>
+                    `).join('');
+                    table.style.display = 'table';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Load deposits
+        async function loadDeposits() {
+            const loading = document.getElementById('depositsLoading');
+            const table = document.getElementById('depositsTable');
+            const tbody = document.getElementById('depositsBody');
+
+            loading.style.display = 'block';
+            table.style.display = 'none';
+
+            try {
+                const response = await fetch(`${API_URL}/admin/deposits`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await response.json();
+                loading.style.display = 'none';
+
+                if (data.success) {
+                    tbody.innerHTML = data.data.deposits.map(dep => `
+                        <tr>
+                            <td>${dep.transaction_code || dep.id}</td>
+                            <td>${dep.username}</td>
+                            <td>${formatMoney(dep.amount)}</td>
+                            <td>${dep.payment_method}</td>
+                            <td><span class="status ${getStatusClass(dep.status)}">${getStatusText(dep.status)}</span></td>
+                            <td>${formatDate(dep.created_at)}</td>
+                            <td>
+                                ${dep.status === 'pending' ? `
+                                    <button class="btn btn-success" onclick="approveDeposit(${dep.id})">Duyệt</button>
+                                    <button class="btn btn-danger" onclick="rejectDeposit(${dep.id})">Từ Chối</button>
+                                ` : '-'}
+                            </td>
+                        </tr>
+                    `).join('');
+                    table.style.display = 'table';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Approve deposit
+        async function approveDeposit(id) {
+            if (!confirm('Xác nhận duyệt nạp tiền?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/admin/deposits/${id}/approve`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ action: 'approve' })
+                });
+
+                if (response.ok) {
+                    alert('Đã duyệt thành công!');
+                    loadDeposits();
+                    loadDashboard();
+                }
+            } catch (error) {
+                alert('Lỗi: ' + error.message);
+            }
+        }
+
+        // Edit user
+        function editUser(userId) {
+            editingUserId = userId;
+            document.getElementById('editUserModal').classList.add('active');
+        }
+
+        // Save user edit
+        async function saveUserEdit() {
+            const balance = document.getElementById('editUserBalance').value;
+
+            try {
+                const response = await fetch(`${API_URL}/admin/users/${editingUserId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ balance: parseInt(balance) })
+                });
+
+                if (response.ok) {
+                    alert('Cập nhật thành công!');
+                    closeModal('editUser');
+                    loadUsers();
+                }
+            } catch (error) {
+                alert('Lỗi: ' + error.message);
+            }
+        }
+
+        // Show section
         function showSection(sectionId) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
             event.currentTarget.classList.add('active');
+
+            if (sectionId === 'users') loadUsers();
+            if (sectionId === 'deposits') loadDeposits();
+            if (sectionId === 'orders') loadAllOrders();
         }
+
+        // Load all orders
+        async function loadAllOrders() {
+            const loading = document.getElementById('ordersLoading');
+            const table = document.getElementById('ordersTable');
+            const tbody = document.getElementById('ordersBody');
+
+            loading.style.display = 'block';
+            table.style.display = 'none';
+
+            try {
+                const response = await fetch(`${API_URL}/admin/orders`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await response.json();
+                loading.style.display = 'none';
+
+                if (data.success) {
+                    tbody.innerHTML = data.data.orders.map(order => `
+                        <tr>
+                            <td>${order.order_code}</td>
+                            <td>${order.username}</td>
+                            <td>${order.service_name}</td>
+                            <td><a href="${order.link}" target="_blank">Link</a></td>
+                            <td>${formatNumber(order.quantity)}</td>
+                            <td>${formatMoney(order.price)}</td>
+                            <td><span class="status ${getStatusClass(order.status)}">${getStatusText(order.status)}</span></td>
+                            <td>${formatDate(order.created_at)}</td>
+                        </tr>
+                    `).join('');
+                    table.style.display = 'table';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function closeModal(type) {
+            document.getElementById(type + 'Modal').classList.remove('active');
+        }
+
+        function formatMoney(amount) {
+            return new Intl.NumberFormat('vi-VN').format(amount) + ' VNĐ';
+        }
+
+        function formatNumber(num) {
+            return new Intl.NumberFormat('vi-VN').format(num);
+        }
+
+        function formatDate(date) {
+            return new Date(date).toLocaleDateString('vi-VN');
+        }
+
+        function getStatusClass(status) {
+            const map = {
+                'pending': 'pending',
+                'processing': 'pending',
+                'completed': 'success',
+                'success': 'success',
+                'active': 'success',
+                'failed': 'failed',
+                'canceled': 'failed'
+            };
+            return map[status] || 'pending';
+        }
+
+        function getStatusText(status) {
+            const map = {
+                'pending': 'Chờ xử lý',
+                'processing': 'Đang xử lý',
+                'completed': 'Hoàn thành',
+                'success': 'Thành công',
+                'active': 'Hoạt động',
+                'failed': 'Thất bại',
+                'canceled': 'Đã hủy'
+            };
+            return map[status] || status;
+        }
+
         function logout() {
-            if(confirm('Bạn có chắc muốn đăng xuất?')) {
-                window.location.href = 'sub-website.html';
+            if (confirm('Đăng xuất?')) {
+                localStorage.clear();
+                window.location.href = 'index.html';
             }
         }
     </script>

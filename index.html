@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUB.VN - Hệ Thống Tăng Tương Tác Mạng Xã Hội</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
+        
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem 0; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        nav { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; }
+        .logo { font-size: 1.8rem; font-weight: bold; }
+        nav ul { display: flex; list-style: none; gap: 2rem; }
+        nav a { color: white; text-decoration: none; transition: opacity 0.3s; }
+        nav a:hover { opacity: 0.8; }
+        .btn-primary { background: white; color: #667eea; padding: 0.6rem 1.5rem; border-radius: 25px; font-weight: bold; transition: transform 0.3s; cursor: pointer; border: none; }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 150px 2rem 100px; text-align: center; margin-top: 60px; }
+        .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.3rem; margin-bottom: 2rem; opacity: 0.95; }
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; }
+        .btn { padding: 1rem 2.5rem; border: none; border-radius: 30px; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-block; }
+        .btn-light { background: white; color: #667eea; }
+        .btn-outline { background: transparent; color: white; border: 2px solid white; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        
+        .stats { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 80px 2rem; text-align: center; }
+        .stats-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; margin-top: 3rem; }
+        .stat-item { background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 15px; backdrop-filter: blur(10px); }
+        .stat-number { font-size: 3rem; font-weight: bold; margin-bottom: 0.5rem; }
+        .stat-label { font-size: 1.2rem; opacity: 0.9; }
+        
+        .services { max-width: 1200px; margin: 80px auto; padding: 0 2rem; }
+        .services h2 { text-align: center; font-size: 2.5rem; color: #667eea; margin-bottom: 3rem; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .service-card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; transition: all 0.3s; }
+        .service-card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(102,126,234,0.3); }
+        .service-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .service-card h3 { color: #667eea; margin-bottom: 1rem; }
+        
+        footer { background: #2c3e50; color: white; padding: 3rem 2rem 2rem; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+        .footer-section h3 { margin-bottom: 1rem; }
+        .footer-section ul { list-style: none; }
+        .footer-section a { color: rgba(255,255,255,0.8); text-decoration: none; }
+        .footer-bottom { text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; padding: 3rem; border-radius: 15px; width: 90%; max-width: 450px; position: relative; }
+        .close-modal { position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem; cursor: pointer; color: #666; }
+        .modal h2 { color: #667eea; margin-bottom: 2rem; text-align: center; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333; }
+        .form-group input { width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; }
+        .form-group input:focus { outline: none; border-color: #667eea; }
+        .submit-btn { width: 100%; padding: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
+        .submit-btn:hover { opacity: 0.9; }
+        .error-message { background: #f8d7da; color: #721c24; padding: 0.8rem; border-radius: 5px; margin-bottom: 1rem; display: none; }
+        .success-message { background: #d4edda; color: #155724; padding: 0.8rem; border-radius: 5px; margin-bottom: 1rem; display: none; }
+        .loading { display: none; text-align: center; }
+        .loading.active { display: block; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">🚀 SUB.VN</div>
+            <ul>
+                <li><a href="#home">Trang Chủ</a></li>
+                <li><a href="#services">Dịch Vụ</a></li>
+                <li><a href="#about">Giới Thiệu</a></li>
+                <li><a href="#contact">Liên Hệ</a></li>
+                <li><button class="btn-primary" onclick="openModal('login')">Đăng Nhập</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <h1>Tăng Tương Tác Mạng Xã Hội Nhanh Chóng</h1>
+        <p>Dịch vụ tăng like, follow, view chuyên nghiệp - Uy tín - Giá rẻ nhất thị trường</p>
+        <div class="hero-buttons">
+            <button class="btn btn-light" onclick="openModal('signup')">Bắt Đầu Ngay</button>
+            <a href="#services" class="btn btn-outline">Xem Dịch Vụ</a>
+        </div>
+    </section>
+
+    <section class="stats">
+        <h2>Thống Kê Của Chúng Tôi</h2>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">103,875+</div>
+                <div class="stat-label">Đơn Hàng Hoàn Thành</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">4,447+</div>
+                <div class="stat-label">Khách Hàng Tin Tưởng</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">156+</div>
+                <div class="stat-label">Đối Tác Chiến Lược</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <h2>Dịch Vụ Của Chúng Tôi</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">📘</div>
+                <h3>Facebook</h3>
+                <p>Tăng like, follow, comment, share, view video và nhiều hơn nữa</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🎵</div>
+                <h3>TikTok</h3>
+                <p>Tăng follow, like, view, comment cho TikTok của bạn</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">▶️</div>
+                <h3>YouTube</h3>
+                <p>Tăng subscriber, view, like, comment cho kênh YouTube</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📷</div>
+                <h3>Instagram</h3>
+                <p>Tăng follow, like, view story, comment Instagram</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">❌</div>
+                <h3>Twitter / X</h3>
+                <p>Tăng follow, like, retweet, comment cho tài khoản X</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">💼</div>
+                <h3>Telegram</h3>
+                <p>Tăng member, view, reaction cho Telegram channel</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>SUB.VN</h3>
+                <p>Hệ thống tăng tương tác mạng xã hội uy tín hàng đầu Việt Nam</p>
+            </div>
+            <div class="footer-section">
+                <h3>Liên Kết</h3>
+                <ul>
+                    <li><a href="#home">Trang Chủ</a></li>
+                    <li><a href="#services">Dịch Vụ</a></li>
+                    <li><a href="#about">Giới Thiệu</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Liên Hệ</h3>
+                <ul>
+                    <li>Zalo: 0972562495</li>
+                    <li>Facebook: OnlyLove</li>
+                    <li>Email: dwen.khachieu@gmail.com</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Thông Tin</h3>
+                <ul>
+                    <li><a href="#">Điều Khoản</a></li>
+                    <li><a href="#">Chính Sách</a></li>
+                    <li><a href="#">Hướng Dẫn</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 SUB.VN - Tất cả quyền được bảo lưu</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('login')">&times;</span>
+            <h2>Đăng Nhập</h2>
+            <div class="error-message" id="loginError"></div>
+            <div class="success-message" id="loginSuccess"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" placeholder="Nhập email..." required>
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" id="loginPassword" placeholder="Nhập mật khẩu..." required>
+                </div>
+                <button type="submit" class="submit-btn">Đăng Nhập</button>
+                <div class="loading" id="loginLoading">Đang đăng nhập...</div>
+                <p style="text-align: center; margin-top: 1rem; color: #666;">
+                    Chưa có tài khoản? <a href="#" onclick="switchModal('login', 'signup')" style="color: #667eea;">Đăng ký ngay</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('signup')">&times;</span>
+            <h2>Đăng Ký Tài Khoản</h2>
+            <div class="error-message" id="signupError"></div>
+            <div class="success-message" id="signupSuccess"></div>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label>Tên đăng nhập</label>
+                    <input type="text" id="signupUsername" placeholder="Nhập tên đăng nhập..." required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="signupEmail" placeholder="Nhập email..." required>
+                </div>
+                <div class="form-group">
+                    <label>Số điện thoại</label>
+                    <input type="tel" id="signupPhone" placeholder="Nhập số điện thoại..." required>
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" id="signupPassword" placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)..." required>
+                </div>
+                <button type="submit" class="submit-btn">Đăng Ký</button>
+                <div class="loading" id="signupLoading">Đang đăng ký...</div>
+                <p style="text-align: center; margin-top: 1rem; color: #666;">
+                    Đã có tài khoản? <a href="#" onclick="switchModal('signup', 'login')" style="color: #667eea;">Đăng nhập</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_URL = 'http://localhost:3000/api';
+        
+        // Modal Functions
+        function openModal(type) {
+            event?.preventDefault();
+            document.getElementById(type + 'Modal').classList.add('active');
+        }
+
+        function closeModal(type) {
+            document.getElementById(type + 'Modal').classList.remove('active');
+            // Clear forms
+            document.getElementById(type + 'Form').reset();
+            document.getElementById(type + 'Error').style.display = 'none';
+            document.getElementById(type + 'Success').style.display = 'none';
+        }
+
+        function switchModal(from, to) {
+            event?.preventDefault();
+            closeModal(from);
+            openModal(to);
+        }
+
+        // Show Error Message
+        function showError(type, message) {
+            const errorDiv = document.getElementById(type + 'Error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Show Success Message
+        function showSuccess(type, message) {
+            const successDiv = document.getElementById(type + 'Success');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+        }
+
+        // Login Handler
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const loadingDiv = document.getElementById('loginLoading');
+            
+            // Validation
+            if (!email || !password) {
+                showError('login', 'Vui lòng điền đầy đủ thông tin!');
+                return;
+            }
+
+            try {
+                loadingDiv.classList.add('active');
+                
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                loadingDiv.classList.remove('active');
+
+                if (response.ok && data.success) {
+                    // Save token and user info
+                    localStorage.setItem('token', data.data.token);
+                    localStorage.setItem('user', JSON.stringify(data.data.user));
+                    
+                    showSuccess('login', 'Đăng nhập thành công! Đang chuyển hướng...');
+                    
+                    // Redirect based on role
+                    setTimeout(() => {
+                        if (data.data.user.role === 'admin') {
+                            window.location.href = 'admin-dashboard.html';
+                        } else {
+                            window.location.href = 'user-dashboard.html';
+                        }
+                    }, 1000);
+                } else {
+                    showError('login', data.message || 'Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin.');
+                }
+            } catch (error) {
+                loadingDiv.classList.remove('active');
+                showError('login', 'Lỗi kết nối server! Vui lòng thử lại sau.');
+                console.error('Login error:', error);
+            }
+        });
+
+        // Signup Handler
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('signupUsername').value;
+            const email = document.getElementById('signupEmail').value;
+            const phone = document.getElementById('signupPhone').value;
+            const password = document.getElementById('signupPassword').value;
+            const loadingDiv = document.getElementById('signupLoading');
+            
+            // Validation
+            if (!username || !email || !phone || !password) {
+                showError('signup', 'Vui lòng điền đầy đủ thông tin!');
+                return;
+            }
+
+            if (password.length < 6) {
+                showError('signup', 'Mật khẩu phải có ít nhất 6 ký tự!');
+                return;
+            }
+
+            try {
+                loadingDiv.classList.add('active');
+                
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        phone,
+                        password,
+                        full_name: username
+                    })
+                });
+
+                const data = await response.json();
+                loadingDiv.classList.remove('active');
+
+                if (response.ok && data.success) {
+                    // Save token and user info
+                    localStorage.setItem('token', data.data.token);
+                    localStorage.setItem('user', JSON.stringify(data.data.user));
+                    
+                    showSuccess('signup', 'Đăng ký thành công! Đang chuyển hướng...');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'user-dashboard.html';
+                    }, 1000);
+                } else {
+                    showError('signup', data.message || 'Đăng ký thất bại! Email hoặc tên đăng nhập đã tồn tại.');
+                }
+            } catch (error) {
+                loadingDiv.classList.remove('active');
+                showError('signup', 'Lỗi kết nối server! Vui lòng thử lại sau.');
+                console.error('Signup error:', error);
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href') !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Check if already logged in
+        window.addEventListener('load', function() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            
+            if (token && user.id) {
+                // User is already logged in, redirect to dashboard
+                if (user.role === 'admin') {
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    window.location.href = 'user-dashboard.html';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
